@@ -6,6 +6,7 @@ import (
 	"encoding/xml"
 	"github.com/rumyantseva/go-yandex-market"
 	"net/http"
+	"os"
 )
 
 func main() {
@@ -29,9 +30,18 @@ func main() {
 	var catalog yamarket.Catalog
 	xml.Unmarshal(b, &catalog)
 
-	//fmt.Println(catalog.Date)
-	//fmt.Println("Магазин: "+ catalog.Shop.Name)
-	//fmt.Printf("%+v\n", catalog)
+	// Categories
+	fmt.Println("\"ID\",\"Title\"")
+	for _, category := range catalog.Shop.Categories {
+		fmt.Printf(
+			"\"%s\",\"%s\"\n",
+			category.ID, category.Title,
+		)
+	}
+
+	os.Exit(-1)
+
+	// Offers
 	fmt.Println("ID,CategoryID,Title,Authors,ISBN,URL")
 	for _, offer := range catalog.Shop.Offers {
 		fmt.Printf(
