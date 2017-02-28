@@ -23,3 +23,14 @@
       created_at TIMESTAMP WITHOUT TIME ZONE NOT NULL,
       updated_at TIMESTAMP WITHOUT TIME ZONE NOT NULL
     );
+    
+    
+## 404 pages
+
+    update books 
+    set mif_id = 7394,
+    category_id = 15,
+    title = 'Технологии, которые изменят мир',
+    authors = 'Мартин Форд',
+    isbn = '978-5-91657-902-4'
+    where url='http://www.mann-ivanov-ferber.ru/books/paperbook/the-lights-in-the-tunnel/'
