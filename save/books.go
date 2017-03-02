@@ -14,6 +14,7 @@ import (
 	"github.com/rumyantseva/mif/models"
 	"gopkg.in/reform.v1"
 	"gopkg.in/reform.v1/dialects/postgresql"
+	"strings"
 )
 
 func main() {
@@ -60,6 +61,7 @@ func main() {
 
 		// Check if book with URL exists
 		bookURL := record[5]
+		bookURL = strings.Replace(bookURL, "?buytab=paperbook&utm_source=ya.market&utm_medium=cpc&utm_campaign=market", "", 100)
 
 		if len(bookURL) == 0 {
 			logrus.Fatalf("Book %s doesn't have URL!", record[0])

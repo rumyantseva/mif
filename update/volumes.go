@@ -31,10 +31,12 @@ func main() {
 		reform.NewPrintfLogger(log.Printf),
 	)
 
+	volumeType := "audiobook"
+
 	//f, err := os.Open("../parse/links_paper.txt")
 	//f, err := os.Open("../parse/links_ebook.txt")
 	//f, err := os.Open("../parse/links_audiobook.txt")
-	f, err := os.Open("../link-list/links_sitemap.txt")
+	f, err := os.Open("../parse/links_white.txt")
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -58,20 +60,31 @@ func main() {
 
 		st, err := DB.FindOneFrom(models.BookTable, "url", bookURL)
 
+		if err != nil {
+			logrus.Fatal(err)
+		}
+
+		book = st.(*models.Book)
+
+		_, err = DB.SelectOneFrom(models.VolumeTable, "WHERE book_id = $1 AND type = $2", book.ID, volumeType)
+
 		if err != nil && err != reform.ErrNoRows {
 			logrus.Fatal(err)
 		}
 
+		// If we already have this entry
 		if err == nil {
-			book = st.(*models.Book)
+			continue
 		}
-		// ---
 
-		book.URL = bookURL
+		volume := &models.Volume{
+			BookID: book.ID,
+			Type: volumeType,
+		}
+		DB.Save(volume)
 
-		DB.Save(book)
 		total++
 	}
 
-	log.Infof("Found and saved %d URLs.", total)
+	log.Infof("Found and saved %d new volumes.", total)
 }
