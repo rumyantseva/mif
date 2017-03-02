@@ -38,20 +38,12 @@
       updated_at TIMESTAMP WITHOUT TIME ZONE NOT NULL
     );
     
-## 404 pages
-
-    update books 
-    set mif_id = 7394,
-    category_id = 15,
-    title = 'Технологии, которые изменят мир',
-    authors = 'Мартин Форд',
-    isbn = '978-5-91657-902-4'
-    where url='http://www.mann-ivanov-ferber.ru/books/paperbook/the-lights-in-the-tunnel/'
-
 ## Импорт данных
 
 Импорт данных на текущий момент предполагается в полуручном режиме: все предлагаемые команды можно запускать или вручную,
 или добавить их в расписание планировщика задач (cron) для регулярного запуска.
+
+Подробности -- в [data](data)
 
 ### Шаг 1. Импорт из Яндекс.Маркета
 
