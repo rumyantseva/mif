@@ -4,13 +4,14 @@ import (
 	"database/sql"
 
 	"bytes"
-	"fmt"
 	"net/http"
 	"strings"
 
 	"encoding/json"
 
 	"strconv"
+
+	"regexp"
 
 	"github.com/AlekSi/pointer"
 	"github.com/Sirupsen/logrus"
@@ -61,18 +62,20 @@ func main() {
 		buf.ReadFrom(resp.Body)
 		respStr := buf.String()
 
+		// Parse ISBN
+		isbn := parseISBN(respStr, log)
+		book.ISBN = pointer.ToString(strings.Trim(isbn, " "))
+
+		// Parse common information
 		parts := strings.Split(respStr, "var initialObject = ")
 		if len(parts) != 2 {
-			log.Fatalf("Couldn't parse page for URL %s", book.URL)
+			log.Fatalf("Couldn't parse common information for URL %s", book.URL)
 		}
 
 		parts = strings.Split(parts[1], "$.extend(")
 		if len(parts) != 2 {
-			log.Fatalf("Couldn't parse page for URL %s", book.URL)
+			log.Fatalf("Couldn't parse common information for URL %s", book.URL)
 		}
-
-		fmt.Println(parts[0])
-
 		parsed := struct {
 			ID         string `json:"productID"`
 			Title      string `json:"productName"`
@@ -105,4 +108,38 @@ func main() {
 	}
 
 	log.Infof("Found and saved %d books.", total)
+}
+
+func parseISBN(response string, log *logrus.Logger) string {
+	parts := strings.Split(response, "<section class=\"l-imprint b-imprint\">")
+	if len(parts) != 2 {
+		return ""
+	}
+
+	parts = strings.Split(parts[1], "</section>")
+	if len(parts) < 2 {
+		return ""
+	}
+
+	parts = strings.Split(parts[0], "ISBN")
+	if len(parts) != 2 {
+		return ""
+	}
+
+	parts = strings.Split(parts[1], "</p>")
+	if len(parts) < 2 {
+		return ""
+	}
+
+	isbn := parts[0]
+
+	if len(isbn) > 20 {
+		var re = regexp.MustCompile(`\d{3}-\d{1}-\d{5}-\d{3}-\d{1}`)
+		isbns := re.FindAllString(isbn, -1)
+		if len(isbns) > 0 {
+			isbn = isbns[0]
+		}
+	}
+
+	return isbn
 }

@@ -18,7 +18,7 @@ func standardizeSpaces(s string) string {
 
 // How to run: go run parse.go
 func main() {
-	linksFile, err := os.OpenFile("./links.txt", os.O_RDWR, 0666)
+	linksFile, err := os.OpenFile("./links.txt", os.O_RDWR|os.O_CREATE, 0666)
 	defer linksFile.Close()
 	if err != nil {
 		fmt.Println("Error opening categories file:", err)

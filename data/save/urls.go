@@ -34,7 +34,7 @@ func main() {
 	//f, err := os.Open("../parse/links_paper.txt")
 	//f, err := os.Open("../parse/links_ebook.txt")
 	//f, err := os.Open("../parse/links_audiobook.txt")
-	f, err := os.Open("../link-list/links_sitemap.txt")
+	f, err := os.Open("../link-list/links.txt")
 	if err != nil {
 		log.Fatal(err)
 	}

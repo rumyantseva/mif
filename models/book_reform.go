@@ -27,7 +27,7 @@ func (v *bookTableType) Name() string {
 
 // Columns returns a new slice of column names for that view or table in SQL database.
 func (v *bookTableType) Columns() []string {
-	return []string{"id", "mif_id", "category_id", "title", "isbn", "authors", "url", "created_at", "updated_at"}
+	return []string{"id", "mif_id", "category_id", "title", "isbn", "authors", "url", "created_at", "updated_at", "is_visible"}
 }
 
 // NewStruct makes a new struct for that view or table.
@@ -47,13 +47,13 @@ func (v *bookTableType) PKColumnIndex() uint {
 
 // BookTable represents books view or table in SQL database.
 var BookTable = &bookTableType{
-	s: parse.StructInfo{Type: "Book", SQLSchema: "", SQLName: "books", Fields: []parse.FieldInfo{{Name: "ID", PKType: "int32", Column: "id"}, {Name: "MIFID", PKType: "", Column: "mif_id"}, {Name: "CategoryID", PKType: "", Column: "category_id"}, {Name: "Title", PKType: "", Column: "title"}, {Name: "ISBN", PKType: "", Column: "isbn"}, {Name: "Authors", PKType: "", Column: "authors"}, {Name: "URL", PKType: "", Column: "url"}, {Name: "CreatedAt", PKType: "", Column: "created_at"}, {Name: "UpdatedAt", PKType: "", Column: "updated_at"}}, PKFieldIndex: 0},
+	s: parse.StructInfo{Type: "Book", SQLSchema: "", SQLName: "books", Fields: []parse.FieldInfo{{Name: "ID", PKType: "int32", Column: "id"}, {Name: "MIFID", PKType: "", Column: "mif_id"}, {Name: "CategoryID", PKType: "", Column: "category_id"}, {Name: "Title", PKType: "", Column: "title"}, {Name: "ISBN", PKType: "", Column: "isbn"}, {Name: "Authors", PKType: "", Column: "authors"}, {Name: "URL", PKType: "", Column: "url"}, {Name: "CreatedAt", PKType: "", Column: "created_at"}, {Name: "UpdatedAt", PKType: "", Column: "updated_at"}, {Name: "IsVisible", PKType: "", Column: "is_visible"}}, PKFieldIndex: 0},
 	z: new(Book).Values(),
 }
 
 // String returns a string representation of this struct or record.
 func (s Book) String() string {
-	res := make([]string, 9)
+	res := make([]string, 10)
 	res[0] = "ID: " + reform.Inspect(s.ID, true)
 	res[1] = "MIFID: " + reform.Inspect(s.MIFID, true)
 	res[2] = "CategoryID: " + reform.Inspect(s.CategoryID, true)
@@ -63,6 +63,7 @@ func (s Book) String() string {
 	res[6] = "URL: " + reform.Inspect(s.URL, true)
 	res[7] = "CreatedAt: " + reform.Inspect(s.CreatedAt, true)
 	res[8] = "UpdatedAt: " + reform.Inspect(s.UpdatedAt, true)
+	res[9] = "IsVisible: " + reform.Inspect(s.IsVisible, true)
 	return strings.Join(res, ", ")
 }
 
@@ -79,6 +80,7 @@ func (s *Book) Values() []interface{} {
 		s.URL,
 		s.CreatedAt,
 		s.UpdatedAt,
+		s.IsVisible,
 	}
 }
 
@@ -95,6 +97,7 @@ func (s *Book) Pointers() []interface{} {
 		&s.URL,
 		&s.CreatedAt,
 		&s.UpdatedAt,
+		&s.IsVisible,
 	}
 }
 

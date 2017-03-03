@@ -6,9 +6,9 @@ import (
 
 // List of possible "volumes" (book types)
 const (
-	VolumePaper = "paperbook"
+	VolumePaper   = "paperbook"
 	VolumeElectro = "ebook"
-	VolumeAudio = "audiobook"
+	VolumeAudio   = "audiobook"
 )
 
 // GetVolumes returns list of possible "volumes" (book types)

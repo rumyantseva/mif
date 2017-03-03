@@ -15,12 +15,14 @@ type Book struct {
 	URL        string    `reform:"url"`
 	CreatedAt  time.Time `reform:"created_at"`
 	UpdatedAt  time.Time `reform:"updated_at"`
+	IsVisible  bool      `reform:"is_visible"`
 }
 
 // BeforeInsert set CreatedAt and UpdatedAt.
 func (b *Book) BeforeInsert() error {
 	b.CreatedAt = time.Now().UTC().Truncate(time.Second)
 	b.UpdatedAt = b.CreatedAt
+	b.IsVisible = true
 	return nil
 }
 

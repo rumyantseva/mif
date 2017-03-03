@@ -1742,3 +1742,4 @@ unknown,http://www.mann-ivanov-ferber.ru/books/sem-preobrazuyushhix-yazyikov/
 unknown,http://www.mann-ivanov-ferber.ru/books/rabota-v-radost/
 unknown,http://www.mann-ivanov-ferber.ru/books/neizbalovannyij/
 unknown,http://www.mann-ivanov-ferber.ru/books/emoczionalnaya_gibkost/
+unknown,http://www.mann-ivanov-ferber.ru/books/maminoj_pomoshhnicze/
