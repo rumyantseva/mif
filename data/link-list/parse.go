@@ -1,20 +1,16 @@
 package main
 
 import (
+	"bufio"
 	"encoding/json"
 	"encoding/xml"
 	"fmt"
+	"github.com/rumyantseva/mif/models"
 	"net/http"
+	"os"
 	"strconv"
 	"strings"
-	"github.com/rumyantseva/mif/models"
-	"os"
-	"bufio"
 )
-
-func standardizeSpaces(s string) string {
-	return strings.Join(strings.Fields(s), " ")
-}
 
 // How to run: go run parse.go
 func main() {
@@ -26,6 +22,9 @@ func main() {
 	}
 
 	volumes := models.GetVolumes()
+
+	fmt.Println("Found volumes: ")
+	fmt.Println(volumes)
 
 	writer := bufio.NewWriter(linksFile)
 	for _, volume := range volumes {
@@ -45,10 +44,11 @@ func main() {
 			json.NewDecoder(resp.Body).Decode(&body)
 
 			if body.Status != "ok" {
-				return
+				break
 			}
 
-			body.HTML = standardizeSpaces("<body><books>" + body.HTML + "</books></body>")
+			s := "<body><books>" + body.HTML + "</books></body>"
+			body.HTML = strings.Join(strings.Fields(s), " ")
 			body.HTML = strings.Replace(body.HTML, "&nbsp;", "", -1)
 
 			type Book struct {

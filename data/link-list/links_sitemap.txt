@@ -1736,6 +1736,7 @@ unknown,http://www.mann-ivanov-ferber.ru/books/paperbook/blueoceanstrategy-mp3/
 unknown,http://www.mann-ivanov-ferber.ru/books/biryuzovyij_podarochnyij_komplekt/
 unknown,http://www.mann-ivanov-ferber.ru/books/gluboko-gluboko-v-okean/
 unknown,http://www.mann-ivanov-ferber.ru/books/xarizma_lidera_podarochnyij_komplekt/
+unknown,http://www.mann-ivanov-ferber.ru/books/xilda-i-ptichij-parad/
 unknown,http://www.mann-ivanov-ferber.ru/books/natvori-chto-xochesh-sekretyi-druzej/
 unknown,http://www.mann-ivanov-ferber.ru/books/sadovnik-i-kust/
 unknown,http://www.mann-ivanov-ferber.ru/books/sem-preobrazuyushhix-yazyikov/

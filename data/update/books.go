@@ -1,47 +1,34 @@
 package main
 
 import (
-	"database/sql"
-
 	"bytes"
-	"net/http"
-	"strings"
-
 	"encoding/json"
-
-	"strconv"
-
+	"net/http"
 	"regexp"
+	"strconv"
+	"strings"
 
 	"github.com/AlekSi/pointer"
 	"github.com/Sirupsen/logrus"
-	_ "github.com/lib/pq"
 	"github.com/rumyantseva/mif/models"
+	"github.com/rumyantseva/mif/utils"
 	"gopkg.in/reform.v1"
-	"gopkg.in/reform.v1/dialects/postgresql"
 )
 
+// How to run:
+// ENV db_host=localhost db_port=5432 db_user=postgres db_pass=mysecretpassword db=mifbooks go run books.go
 func main() {
 	log := logrus.New()
 
-	conn, err := sql.Open(
-		"postgres",
-		"postgres://postgres:mysecretpassword@localhost:5432/mifbooks?sslmode=disable",
-	)
+	db, err := utils.StartupDB()
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	DB := reform.NewDB(
-		conn,
-		postgresql.Dialect,
-		reform.NewPrintfLogger(log.Printf),
-	)
-
 	total := 0
 
 	for {
-		st, err := DB.FindOneFrom(models.BookTable, "title", nil)
+		st, err := db.FindOneFrom(models.BookTable, "title", nil)
 
 		if err != nil && err != reform.ErrNoRows {
 			logrus.Fatal(err)
@@ -103,7 +90,7 @@ func main() {
 		}
 		book.CategoryID = pointer.ToInt32(int32(catID))
 
-		DB.Save(book)
+		db.Save(book)
 		total++
 	}
 

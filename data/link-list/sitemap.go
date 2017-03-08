@@ -1,13 +1,11 @@
 package main
 
 import (
-	"encoding/xml"
-	"net/http"
-
 	"bufio"
-	"os"
-
+	"encoding/xml"
 	"io/ioutil"
+	"net/http"
+	"os"
 	"strings"
 
 	"github.com/Sirupsen/logrus"
@@ -27,13 +25,6 @@ func main() {
 	}
 	reader := resp.Body
 
-	/*f, err := os.Open("./sitemap.xml")
-	defer f.Close()
-	if err != nil {
-		log.Fatalf("Error opening file: %s", err)
-	}
-	reader := bufio.NewReader(f)*/
-
 	linksFile, err := os.OpenFile("./links_sitemap.txt", os.O_RDWR|os.O_CREATE, 0666)
 	defer linksFile.Close()
 	if err != nil {
@@ -50,7 +41,6 @@ func main() {
 	}
 
 	container := Data{}
-	//xml.NewDecoder(reader).Decode(&container)
 
 	b, _ := ioutil.ReadAll(reader)
 	xml.Unmarshal(b, &container)
@@ -58,7 +48,7 @@ func main() {
 	writer := bufio.NewWriter(linksFile)
 	total := 0
 	for _, item := range container.Books {
-		writer.WriteString("unknown," + standardizeSpaces(item.Val) + "\n")
+		writer.WriteString("unknown," + strings.Join(strings.Fields(item.Val), " ") + "\n")
 		total++
 	}
 	writer.Flush()

@@ -2,41 +2,27 @@ package main
 
 import (
 	"bufio"
-	"database/sql"
 	"encoding/csv"
 	"io"
 	"os"
 
 	"github.com/Sirupsen/logrus"
-	_ "github.com/lib/pq"
 	"github.com/rumyantseva/mif/models"
+	"github.com/rumyantseva/mif/utils"
 	"gopkg.in/reform.v1"
-	"gopkg.in/reform.v1/dialects/postgresql"
 )
 
+// How to run:
+// ENV db_host=localhost db_port=5432 db_user=postgres db_pass=mysecretpassword db=mifbooks go run volumes.go
 func main() {
 	log := logrus.New()
 
-	conn, err := sql.Open(
-		"postgres",
-		"postgres://postgres:mysecretpassword@localhost:5432/mifbooks?sslmode=disable",
-	)
+	DB, err := utils.StartupDB()
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	DB := reform.NewDB(
-		conn,
-		postgresql.Dialect,
-		reform.NewPrintfLogger(log.Printf),
-	)
-
-	volumeType := "audiobook"
-
-	//f, err := os.Open("../parse/links_paper.txt")
-	//f, err := os.Open("../parse/links_ebook.txt")
-	//f, err := os.Open("../parse/links_audiobook.txt")
-	f, err := os.Open("../parse/links_white.txt")
+	f, err := os.Open("../link-list/links.txt")
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -55,6 +41,7 @@ func main() {
 
 		book := &models.Book{}
 
+		volumeType := record[0]
 		// Check if book with URL exists
 		bookURL := record[1]
 
@@ -79,7 +66,7 @@ func main() {
 
 		volume := &models.Volume{
 			BookID: book.ID,
-			Type: volumeType,
+			Type:   volumeType,
 		}
 		DB.Save(volume)
 

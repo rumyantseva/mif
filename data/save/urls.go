@@ -2,75 +2,67 @@ package main
 
 import (
 	"bufio"
-	"database/sql"
 	"encoding/csv"
 	"io"
 	"os"
 
 	"github.com/Sirupsen/logrus"
-	_ "github.com/lib/pq"
 	"github.com/rumyantseva/mif/models"
+	"github.com/rumyantseva/mif/utils"
 	"gopkg.in/reform.v1"
-	"gopkg.in/reform.v1/dialects/postgresql"
 )
 
+// How to run:
+// ENV db_host=localhost db_port=5432 db_user=postgres db_pass=mysecretpassword db=mifbooks go run urls.go
 func main() {
 	log := logrus.New()
 
-	conn, err := sql.Open(
-		"postgres",
-		"postgres://postgres:mysecretpassword@localhost:5432/mifbooks?sslmode=disable",
-	)
+	DB, err := utils.StartupDB()
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	DB := reform.NewDB(
-		conn,
-		postgresql.Dialect,
-		reform.NewPrintfLogger(log.Printf),
-	)
-
-	//f, err := os.Open("../parse/links_paper.txt")
-	//f, err := os.Open("../parse/links_ebook.txt")
-	//f, err := os.Open("../parse/links_audiobook.txt")
-	f, err := os.Open("../link-list/links.txt")
-	if err != nil {
-		log.Fatal(err)
-	}
+	sources := []string{"links_white.txt", "links_sitemap.txt", "links.txt"}
 
 	total := 0
 
-	r := csv.NewReader(bufio.NewReader(f))
-
-	// Read rows from file
-	for {
-		record, err := r.Read()
-
-		if err == io.EOF {
-			break
+	for _, src := range sources {
+		f, err := os.Open("../link-list/" + src)
+		if err != nil {
+			log.Fatal(err)
 		}
 
-		book := &models.Book{}
+		r := csv.NewReader(bufio.NewReader(f))
 
-		// Check if book with URL exists
-		bookURL := record[1]
+		// Read rows from file
+		for {
+			record, err := r.Read()
 
-		st, err := DB.FindOneFrom(models.BookTable, "url", bookURL)
+			if err == io.EOF {
+				break
+			}
 
-		if err != nil && err != reform.ErrNoRows {
-			logrus.Fatal(err)
+			book := &models.Book{}
+
+			// Check if book with URL exists
+			bookURL := record[1]
+
+			st, err := DB.FindOneFrom(models.BookTable, "url", bookURL)
+
+			if err != nil && err != reform.ErrNoRows {
+				logrus.Fatal(err)
+			}
+
+			if err == nil {
+				book = st.(*models.Book)
+			}
+			// ---
+
+			book.URL = bookURL
+
+			DB.Save(book)
+			total++
 		}
-
-		if err == nil {
-			book = st.(*models.Book)
-		}
-		// ---
-
-		book.URL = bookURL
-
-		DB.Save(book)
-		total++
 	}
 
 	log.Infof("Found and saved %d URLs.", total)

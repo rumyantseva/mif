@@ -2,35 +2,25 @@ package main
 
 import (
 	"bufio"
-	"database/sql"
 	"encoding/csv"
 	"io"
 	"os"
 	"strconv"
 
 	"github.com/Sirupsen/logrus"
-	_ "github.com/lib/pq"
 	"github.com/rumyantseva/mif/models"
-	"gopkg.in/reform.v1"
-	"gopkg.in/reform.v1/dialects/postgresql"
+	"github.com/rumyantseva/mif/utils"
 )
 
+// How to run:
+// ENV db_host=localhost db_port=5432 db_user=postgres db_pass=mysecretpassword db=mifbooks go run categories.go
 func main() {
 	log := logrus.New()
 
-	conn, err := sql.Open(
-		"postgres",
-		"postgres://postgres:mysecretpassword@localhost:5432/mifbooks?sslmode=disable",
-	)
+	DB, err := utils.StartupDB()
 	if err != nil {
 		log.Fatal(err)
 	}
-
-	DB := reform.NewDB(
-		conn,
-		postgresql.Dialect,
-		reform.NewPrintfLogger(log.Printf),
-	)
 
 	f, err := os.Open("../import/categories.csv")
 	if err != nil {

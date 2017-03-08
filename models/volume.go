@@ -13,8 +13,20 @@ const (
 
 // GetVolumes returns list of possible "volumes" (book types)
 func GetVolumes() []string {
-	volumes := []string{VolumePaper, VolumeElectro, VolumeAudio}
+	volumes := []string{VolumeAudio, VolumeElectro, VolumePaper}
 	return volumes
+}
+
+// CheckVolume
+func CheckVolume(volume string) bool {
+	switch volume {
+	case VolumePaper:
+	case VolumeElectro:
+	case VolumeAudio:
+	default:
+		return false
+	}
+	return true
 }
 
 //go:generate reform

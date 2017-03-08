@@ -1,13 +1,14 @@
 package main
 
 import (
+	"bufio"
+	"encoding/xml"
 	"fmt"
 	"io/ioutil"
-	"encoding/xml"
-	"github.com/rumyantseva/go-yandex-market"
 	"net/http"
 	"os"
-	"bufio"
+
+	"github.com/rumyantseva/go-yandex-market"
 )
 
 // How to run: go run import.go
