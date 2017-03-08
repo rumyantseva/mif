@@ -160,13 +160,14 @@ __Обязательные параметры запроса:__
 __Обязательные параметры тела запроса:__
 
 - `book_id` - идентификатор добавляемой книги
-- `type` - "носитель" добавляемой книги: `paperbook`, `ebook`, `audiobook`.
+- `type` - "носитель" добавляемой книги: `paperbook`, `ebook`, `audiobook`
 
 __Пример запроса:__ 
 
     curl -X POST http://mif.grahovac.me/api/v1/library?token=6f9c1a78-36c7-4703-adb7-e0101e480c64 \
     -H 'Content-Type: application/json' \
     -d '{"book_id": 33, "type": "paperbook"}'
+
 #### Удалить книгу из своей библиотеки
 
 `DELETE /api/v1/library`
