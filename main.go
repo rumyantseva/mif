@@ -2,12 +2,13 @@ package main
 
 import (
 	"flag"
+	"net/http"
+	"os"
+
 	"github.com/Sirupsen/logrus"
 	"github.com/julienschmidt/httprouter"
 	"github.com/rumyantseva/mif/middleware"
 	"github.com/rumyantseva/mif/utils"
-	"net/http"
-	"os"
 )
 
 var (

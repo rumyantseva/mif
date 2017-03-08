@@ -2,13 +2,14 @@ package utils
 
 import (
 	"database/sql"
-	"log"
-
 	"fmt"
+	"log"
+	"os"
+
+	// We don't need to use lib/pq directly
 	_ "github.com/lib/pq"
 	"gopkg.in/reform.v1"
 	"gopkg.in/reform.v1/dialects/postgresql"
-	"os"
 )
 
 // StartupDB get DB parameters from env and returns pointer to reform.DB connection.
