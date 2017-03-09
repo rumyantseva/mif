@@ -26,14 +26,13 @@ func (mw *MW) AddToLibrary(w http.ResponseWriter, r *http.Request, _ httprouter.
 		return
 	}
 
-	mw.log.Debugf("The request 2 is: %+v", request)
 	user := mw.getUser(r)
 	if user == nil {
 		mw.log.Errorf("Couldn't get user from the context of request.")
 		mw.errorServer(w)
 		return
 	}
-	mw.log.Error("IM HERE 1")
+
 	// Check if user doesn't have this book in their library
 	query := "JOIN volumes v ON v.id = library.volume_id " +
 		" WHERE library.user_id = " + mw.db.Placeholder(1) +
@@ -48,7 +47,7 @@ func (mw *MW) AddToLibrary(w http.ResponseWriter, r *http.Request, _ httprouter.
 		mw.makeError(w, http.StatusBadRequest, "Book already exists in the library of current user.")
 		return
 	}
-	mw.log.Error("IM HERE 2")
+
 	// Check if book and volume exist
 	query = "WHERE type = " + mw.db.Placeholder(1) + " AND book_id = " + mw.db.Placeholder(2)
 	st, err := mw.db.SelectOneFrom(models.VolumeTable, query, request.Type, request.BookID)
@@ -166,13 +165,14 @@ func (mw *MW) Library(w http.ResponseWriter, r *http.Request, _ httprouter.Param
 		"library.id", "library.volume_id", "library.created_at", "library.updated_at",
 		"volumes.book_id", "volumes.type", "books.title", "books.authors",
 	}
-	q := "SELECT " + strings.Join(columns, ",") + " FROM library " +
-		"JOIN volumes ON volumes.id = library.volume_id " +
+	condition := " JOIN volumes ON volumes.id = library.volume_id " +
 		"JOIN books ON books.id = volumes.book_id " +
-		"WHERE library.user_id = $1 " +
-		"ORDER BY library.id DESC " +
+		"WHERE library.user_id = $1 "
+
+	query := "SELECT " + strings.Join(columns, ",") + " FROM library " +
+		condition + "ORDER BY library.id DESC " +
 		fmt.Sprintf("LIMIT %d OFFSET %d ", request.limit, request.offset)
-	rows, err := mw.db.Query(q, user.ID)
+	rows, err := mw.db.Query(query, user.ID)
 	if err != nil {
 		mw.log.Errorf("Couldn't get data from DB for library: %s", err.Error())
 		mw.errorServer(w)
@@ -220,7 +220,27 @@ func (mw *MW) Library(w http.ResponseWriter, r *http.Request, _ httprouter.Param
 		return
 	}
 
-	mw.makeDataBody(w, http.StatusOK, data, nil)
+	// Total amount of books for the library
+	var total int
+	query = "SELECT COUNT(books.*) FROM " + models.LibraryTable.Name() + condition
+	err = mw.db.QueryRow(query, user.ID).Scan(&total)
+	if err != nil {
+		mw.log.Errorf("Couldn't get data from DB for books total count: %s", err.Error())
+		mw.errorServer(w)
+		return
+	}
+
+	meta := struct {
+		Total  int `json:"total"`
+		Limit  int `json:"limit"`
+		Offset int `json:"offset"`
+	}{
+		Limit:  request.limit,
+		Offset: request.offset,
+		Total:  total,
+	}
+
+	mw.makeDataBody(w, http.StatusOK, data, meta)
 }
 
 // libraryRequest checks body of http request and makes LibraryRequest item.

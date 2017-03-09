@@ -2063,6 +2063,9 @@ SELECT pg_catalog.setval('categories_id_seq', 1, false);
 --
 
 COPY library (id, user_id, volume_id, created_at, updated_at) FROM stdin;
+2	1	2507	2017-03-09 06:10:11	2017-03-09 06:10:11
+4	1	3701	2017-03-09 08:00:21	2017-03-09 08:00:21
+5	1	3427	2017-03-09 08:00:37	2017-03-09 08:00:37
 \.
 
 
@@ -2070,7 +2073,7 @@ COPY library (id, user_id, volume_id, created_at, updated_at) FROM stdin;
 -- Name: library_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('library_id_seq', 1, false);
+SELECT pg_catalog.setval('library_id_seq', 5, true);
 
 
 --
@@ -2078,6 +2081,7 @@ SELECT pg_catalog.setval('library_id_seq', 1, false);
 --
 
 COPY users (id, email, token, created_at, updated_at) FROM stdin;
+1	ra9obg@gmail.com	6f9c1a78-36c7-4703-adb7-e0101e480c64	2017-03-08 19:27:22.551827	2017-03-08 19:27:22.551827
 \.
 
 
@@ -2085,7 +2089,7 @@ COPY users (id, email, token, created_at, updated_at) FROM stdin;
 -- Name: users_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('users_id_seq', 1, false);
+SELECT pg_catalog.setval('users_id_seq', 1, true);
 
 
 --

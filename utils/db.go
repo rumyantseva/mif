@@ -13,7 +13,7 @@ import (
 )
 
 // StartupDB get DB parameters from env and returns pointer to reform.DB connection.
-// Command line example: ENV db_host=localhost db_port=5432 db_user=postgres db_pass=mysecretpassword db=mifbooks
+// Command line example: env db_host=localhost db_port=5432 db_user=postgres db_pass=mysecretpassword db=mifbooks
 func StartupDB() (*reform.DB, error) {
 	host := os.Getenv("db_host")
 	port := os.Getenv("db_port")
