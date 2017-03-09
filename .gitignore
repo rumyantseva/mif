@@ -1,3 +1,4 @@
 .idea
+/mif
 vendor/
 !vendor/vendor.json

@@ -28,7 +28,7 @@
 
 ### База данных
 
-    createdb  mifbooks --encoding='utf-8' --locale=en_US.utf8 --template=template0;
+    CREATE DATABASE mifbooks WITH TEMPLATE = template0 ENCODING = 'UTF8' LC_COLLATE = 'en_US.utf8' LC_CTYPE = 'en_US.utf8';
     
 ### Необходимые таблицы
 
@@ -89,10 +89,21 @@
 
 # Запуск REST API
 
-Пример запуска сервера API:
+## Пример запуска с помощью Docker'а
 
-    env host=127.0.0.1 port=80 \
-    db_host=localhost db_port=5432 db_user=postgres db_pass=mysecretpassword db=mifbooks \
+Самый простой способ поднять сервер с API.
+В этом случае из [DockerHub](https://hub.docker.com/u/webdeva/)'а будут подтянуты уже существующие контейнеры с БД и приложением.
+
+    docker-compose up
+    
+Запуск сервера занимает ~30 секунд. После этого сразу можно делать запросы к API.
+
+## Пример "сырого" запуска сервера API
+
+В этом случае будет произведен запуск приложения с использованием `go run` (полезно для отладки).
+
+    env HOST=127.0.0.1 PORT=80 \
+    DB_HOST=localhost DB_PORT=5432 DB_USER=postgres DB_PASS=mysecretpassword DB=mifbooks \
     go run main.go --debug
     
     

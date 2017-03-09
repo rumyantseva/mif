@@ -13,7 +13,7 @@ import (
 )
 
 // How to run:
-// env db_host=localhost db_port=5432 db_user=postgres db_pass=mysecretpassword db=mifbooks go run volumes.go
+// env DB_HOST=localhost DB_PORT=5432 DB_USER=postgres DB_PASS=mysecretpassword DB=mifbooks go run volumes.go
 func main() {
 	log := logrus.New()
 

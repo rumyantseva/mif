@@ -17,7 +17,7 @@ var (
 )
 
 // How to run:
-// env host=127.0.0.1 port=80 db_host=localhost db_port=5432 db_user=postgres db_pass=mysecretpassword db=mifbooks go run main.go
+// env HOST=127.0.0.1 PORT=80 DB_HOST=localhost DB_PORT=5432 DB_USER=postgres DB_PASS=mysecretpassword DB=mifbooks go run main.go
 func main() {
 	flag.Parse()
 	log := logrus.New()
@@ -29,8 +29,8 @@ func main() {
 		log.Level = logrus.InfoLevel
 	}
 
-	host := os.Getenv("host")
-	port := os.Getenv("port")
+	host := os.Getenv("HOST")
+	port := os.Getenv("PORT")
 	addr := host + ":" + port
 
 	log.Info("Start service on " + addr + "...")
@@ -49,6 +49,8 @@ func main() {
 	router.GET("/api/v1/library", mw.Authorize(mw.Library))
 	router.POST("/api/v1/library", mw.Authorize(mw.AddToLibrary))
 	router.DELETE("/api/v1/library", mw.Authorize(mw.DeleteFromLibrary))
+
+	log.Info("Service is waiting for requests...")
 
 	err = http.ListenAndServe(addr, router)
 	if err != nil {

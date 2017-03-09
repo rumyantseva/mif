@@ -1,0 +1,25 @@
+version: "2"
+services:
+  app:
+    image: webdeva/mif-app
+    links:
+      - "db"
+    ports:
+      - "80:80"
+    depends_on:
+      - "db"
+    environment:
+      HOST: 0.0.0.0
+      PORT: 80
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_USER: postgres
+      DB_PASS: mysecretpassword
+      DB: mifbooks
+  db:
+    image: webdeva/mif-postgresql
+    ports:
+      - "5433:5432"
+    environment:
+     POSTGRESQL_USER: postgres
+     POSTGRESQL_PASS: mysecretpassword

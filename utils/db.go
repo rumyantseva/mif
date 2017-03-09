@@ -10,16 +10,17 @@ import (
 	_ "github.com/lib/pq"
 	"gopkg.in/reform.v1"
 	"gopkg.in/reform.v1/dialects/postgresql"
+	"time"
 )
 
 // StartupDB get DB parameters from env and returns pointer to reform.DB connection.
-// Command line example: env db_host=localhost db_port=5432 db_user=postgres db_pass=mysecretpassword db=mifbooks
+// Command line example: env DB_HOST=localhost DB_PORT=5432 DB_USER=postgres DB_PASS=mysecretpassword DB=mifbooks
 func StartupDB() (*reform.DB, error) {
-	host := os.Getenv("db_host")
-	port := os.Getenv("db_port")
-	user := os.Getenv("db_user")
-	pass := os.Getenv("db_pass")
-	dbname := os.Getenv("db")
+	host := os.Getenv("DB_HOST")
+	port := os.Getenv("DB_PORT")
+	user := os.Getenv("DB_USER")
+	pass := os.Getenv("DB_PASS")
+	dbname := os.Getenv("DB")
 
 	source := fmt.Sprintf(
 		"postgres://%s:%s@%s:%s/%s?sslmode=disable",
@@ -34,7 +35,11 @@ func StartupDB() (*reform.DB, error) {
 	// Try ping to check connection
 	err = conn.Ping()
 	if err != nil {
-		return nil, err
+		time.Sleep(30 * time.Second)
+		err = conn.Ping()
+		if err != nil {
+			return nil, err
+		}
 	}
 
 	db := reform.NewDB(
