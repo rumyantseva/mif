@@ -17,7 +17,7 @@ func GetVolumes() []string {
 	return volumes
 }
 
-// CheckVolume
+// CheckVolume checks if the given volume is supported
 func CheckVolume(volume string) bool {
 	switch volume {
 	case VolumePaper:
