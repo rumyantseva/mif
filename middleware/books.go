@@ -12,6 +12,16 @@ import (
 	"gopkg.in/reform.v1"
 )
 
+// SearchBooksRequest describes parameters of books searching request.
+type SearchBooksRequest struct {
+	mifID  *int
+	volume *string
+	search *string
+	author *string
+	limit  int
+	offset int
+}
+
 // SingleBook finds book from database by its id with volumes available for this book.
 func (mw *MW) SingleBook(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
 	bookID, err := strconv.Atoi(p.ByName("id"))
@@ -55,79 +65,9 @@ func (mw *MW) SingleBook(w http.ResponseWriter, r *http.Request, p httprouter.Pa
 
 // SearchBooks finds multiple books by the given search criteria.
 func (mw *MW) SearchBooks(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
-	request := struct {
-		mifID  *int
-		volume *string
-		search *string
-		author *string
-		limit  int
-		offset int
-	}{
-		mifID:  nil,
-		volume: nil,
-		search: nil,
-		author: nil,
-		limit:  10,
-		offset: 0,
-	}
-
-	mifID := r.URL.Query().Get("mif_id")
-	if len(mifID) > 0 {
-		numID, err := strconv.Atoi(mifID)
-		if err != nil {
-			mw.makeError(w, http.StatusBadRequest, "MIF ID must be positive integer.")
-			return
-		}
-
-		request.mifID = pointer.ToInt(numID)
-	}
-
-	volume := r.URL.Query().Get("type")
-	if len(volume) > 0 {
-		possible := models.CheckVolume(volume)
-		if !possible {
-			msg := "Volume type is wrong. Possible values are: " + strings.Join(models.GetVolumes(), ", ")
-			mw.makeError(w, http.StatusBadRequest, msg)
-			return
-		}
-		request.volume = pointer.ToString(volume)
-	}
-
-	search := r.URL.Query().Get("search")
-	if len(search) > 0 {
-		request.search = pointer.ToString("%" + search + "%")
-	}
-
-	author := r.URL.Query().Get("author")
-	if len(author) > 0 {
-		request.author = pointer.ToString("%" + author + "%")
-	}
-
-	limit := r.URL.Query().Get("limit")
-	if len(limit) > 0 {
-		numLim, err := strconv.Atoi(limit)
-		if err != nil || numLim <= 0 {
-			mw.makeError(w, http.StatusBadRequest, "Limit must be integer between 1 and 100.")
-			return
-		}
-
-		if numLim > 100 {
-			mw.makeError(w, http.StatusBadRequest, "Limit must be integer between 1 and 100.")
-			return
-		}
-
-		request.limit = numLim
-	}
-
-	offset := r.URL.Query().Get("offset")
-	if len(offset) > 0 {
-		numOffset, err := strconv.Atoi(offset)
-		if err != nil || numOffset < 0 {
-			mw.makeError(w, http.StatusBadRequest, "Offset must be non-negative integer.")
-			return
-		}
-
-		request.offset = numOffset
+	request := mw.searchBooksRequest(r, w)
+	if request == nil {
+		return
 	}
 
 	sel := ""
@@ -203,4 +143,77 @@ func (mw *MW) SearchBooks(w http.ResponseWriter, r *http.Request, _ httprouter.P
 		Total:  total,
 	}
 	mw.makeDataBody(w, http.StatusOK, books, meta)
+}
+
+// searchBooksRequest checks http request and makes SearchBooksRequest item.
+func (mw *MW) searchBooksRequest(r *http.Request, w http.ResponseWriter) *SearchBooksRequest {
+	request := &SearchBooksRequest{
+		mifID:  nil,
+		volume: nil,
+		search: nil,
+		author: nil,
+		limit:  10,
+		offset: 0,
+	}
+
+	mifID := r.URL.Query().Get("mif_id")
+	if len(mifID) > 0 {
+		numID, err := strconv.Atoi(mifID)
+		if err != nil {
+			mw.makeError(w, http.StatusBadRequest, "MIF ID must be positive integer.")
+			return nil
+		}
+
+		request.mifID = pointer.ToInt(numID)
+	}
+
+	volume := r.URL.Query().Get("type")
+	if len(volume) > 0 {
+		possible := models.CheckVolume(volume)
+		if !possible {
+			msg := "Volume type is wrong. Possible values are: " + strings.Join(models.GetVolumes(), ", ")
+			mw.makeError(w, http.StatusBadRequest, msg)
+			return nil
+		}
+		request.volume = pointer.ToString(volume)
+	}
+
+	search := r.URL.Query().Get("search")
+	if len(search) > 0 {
+		request.search = pointer.ToString("%" + search + "%")
+	}
+
+	author := r.URL.Query().Get("author")
+	if len(author) > 0 {
+		request.author = pointer.ToString("%" + author + "%")
+	}
+
+	limit := r.URL.Query().Get("limit")
+	if len(limit) > 0 {
+		numLim, err := strconv.Atoi(limit)
+		if err != nil || numLim <= 0 {
+			mw.makeError(w, http.StatusBadRequest, "Limit must be integer between 1 and 100.")
+			return nil
+		}
+
+		if numLim > 100 {
+			mw.makeError(w, http.StatusBadRequest, "Limit must be integer between 1 and 100.")
+			return nil
+		}
+
+		request.limit = numLim
+	}
+
+	offset := r.URL.Query().Get("offset")
+	if len(offset) > 0 {
+		numOffset, err := strconv.Atoi(offset)
+		if err != nil || numOffset < 0 {
+			mw.makeError(w, http.StatusBadRequest, "Offset must be non-negative integer.")
+			return nil
+		}
+
+		request.offset = numOffset
+	}
+
+	return request
 }
