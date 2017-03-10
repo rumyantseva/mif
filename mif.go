@@ -17,7 +17,7 @@ var (
 )
 
 // How to run:
-// env HOST=127.0.0.1 PORT=80 DB_HOST=localhost DB_PORT=5432 DB_USER=postgres DB_PASS=mysecretpassword DB=mifbooks go run main.go
+// env HOST=127.0.0.1 PORT=80 DB_HOST=localhost DB_PORT=5432 DB_USER=postgres DB_PASS=mysecretpassword DB=mifbooks go run mif.go
 func main() {
 	flag.Parse()
 	log := logrus.New()
