@@ -4,6 +4,7 @@ import "time"
 
 //go:generate reform
 
+// Library describes library of the user.
 //reform:library
 type Library struct {
 	ID        int32     `reform:"id,pk" json:"id"`

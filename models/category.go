@@ -6,6 +6,7 @@ import (
 
 //go:generate reform
 
+// Category describes book category.
 //reform:categories
 type Category struct {
 	ID        int32     `reform:"id,pk"`

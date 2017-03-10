@@ -31,6 +31,7 @@ func CheckVolume(volume string) bool {
 
 //go:generate reform
 
+// Volume describes "type" of book - paperbook, ebook or audiobook.
 //reform:volumes
 type Volume struct {
 	ID        int32     `reform:"id,pk"`

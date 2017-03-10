@@ -4,6 +4,7 @@ import "time"
 
 //go:generate reform
 
+// Book describes book entity.
 //reform:books
 type Book struct {
 	ID         int32     `reform:"id,pk" json:"id"`

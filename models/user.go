@@ -4,6 +4,7 @@ import "time"
 
 //go:generate reform
 
+// User describes some user entity.
 //reform:users
 type User struct {
 	ID        int32     `reform:"id,pk"`

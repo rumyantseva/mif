@@ -33,8 +33,8 @@ func StartupDB() (*reform.DB, error) {
 	}
 
 	// Try ping to check connection
-	attemps := 10
-	for i := 0; i < attemps; i++ {
+	attempts := 10
+	for i := 0; i < attempts; i++ {
 		err = conn.Ping()
 		if err == nil {
 			break
