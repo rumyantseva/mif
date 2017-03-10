@@ -1,4 +1,7 @@
-Этот репозиторий представляет собой реализацию неофициального REST API для книг издательства [МИФ](http://mann-ivanov-ferber.ru).
+[![Go Report Card](https://goreportcard.com/badge/github.com/rumyantseva/mif)](https://goreportcard.com/report/github.com/rumyantseva/mif)
+
+
+Этот репозиторий представляет собой реализацию неофициального REST API для книг издательства [«МИФ»](http://mann-ivanov-ferber.ru).
 
 Всё написано на [Go](https://golang.org).
 
