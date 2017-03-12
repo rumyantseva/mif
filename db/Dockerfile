@@ -1,3 +1,3 @@
 FROM postgres
 
-ADD ./mifbooks.sql /docker-entrypoint-initdb.d
+ADD ./db/mifbooks.sql /docker-entrypoint-initdb.d

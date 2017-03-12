@@ -96,7 +96,7 @@ func (mw *MW) SearchBooks(w http.ResponseWriter, r *http.Request, _ httprouter.P
 
 	join := ""
 	if request.volume != nil {
-		join = "JOIN volumes v ON v.book_id = books.id "
+		join = " JOIN volumes v ON v.book_id = books.id "
 		conditions = append(conditions, "v.type = "+mw.db.Placeholder(ind))
 		args = append(args, *request.volume)
 	}
