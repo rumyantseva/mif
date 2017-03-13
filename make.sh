@@ -6,11 +6,15 @@ VERSION=0.0.2
 # Prepare database with dump
 echo "Prepare DB for version "$VERSION
 
-docker build --no-cache=true -t webdeva/mif-postgresql:$VERSION -f ./db/Dockerfile .
+cd ./db
+unzip ./mifbooks.sql.zip
+docker build --no-cache=true -t webdeva/mif-postgresql:$VERSION -f ./Dockerfile .
 docker push webdeva/mif-postgresql:$VERSION
 
-docker build --no-cache=true -t webdeva/mif-postgresql:latest -f ./db/Dockerfile .
+docker build --no-cache=true -t webdeva/mif-postgresql:latest -f ./Dockerfile .
 docker push webdeva/mif-postgresql:latest
+
+cd ..
 
 # Prepare application
 echo "Prepare app for version "$VERSION

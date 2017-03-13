@@ -1,4 +1,5 @@
 .idea
 /mif
+db/mifbooks.sql
 vendor/
 !vendor/vendor.json
