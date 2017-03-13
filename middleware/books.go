@@ -3,6 +3,7 @@ package middleware
 import (
 	"fmt"
 	"net/http"
+	"regexp"
 	"strconv"
 	"strings"
 
@@ -156,7 +157,7 @@ func (mw *MW) searchBooksRequest(r *http.Request, w http.ResponseWriter) *Search
 		offset: 0,
 	}
 
-	mifID := r.URL.Query().Get("mif_id")
+	mifID := strings.Trim(r.URL.Query().Get("mif_id"), " ")
 	if len(mifID) > 0 {
 		numID, err := strconv.Atoi(mifID)
 		if err != nil {
@@ -167,7 +168,7 @@ func (mw *MW) searchBooksRequest(r *http.Request, w http.ResponseWriter) *Search
 		request.mifID = pointer.ToInt(numID)
 	}
 
-	volume := r.URL.Query().Get("type")
+	volume := strings.Trim(r.URL.Query().Get("type"), " ")
 	if len(volume) > 0 {
 		possible := models.CheckVolume(volume)
 		if !possible {
@@ -178,17 +179,17 @@ func (mw *MW) searchBooksRequest(r *http.Request, w http.ResponseWriter) *Search
 		request.volume = pointer.ToString(volume)
 	}
 
-	search := r.URL.Query().Get("search")
+	search := clearWhitespaces(r.URL.Query().Get("search"))
 	if len(search) > 0 {
 		request.search = pointer.ToString("%" + search + "%")
 	}
 
-	author := r.URL.Query().Get("author")
+	author := clearWhitespaces(r.URL.Query().Get("author"))
 	if len(author) > 0 {
 		request.author = pointer.ToString("%" + author + "%")
 	}
 
-	limit := r.URL.Query().Get("limit")
+	limit := strings.Trim(r.URL.Query().Get("limit"), " ")
 	if len(limit) > 0 {
 		numLim, err := strconv.Atoi(limit)
 		if err != nil || numLim <= 0 {
@@ -204,7 +205,7 @@ func (mw *MW) searchBooksRequest(r *http.Request, w http.ResponseWriter) *Search
 		request.limit = numLim
 	}
 
-	offset := r.URL.Query().Get("offset")
+	offset := strings.Trim(r.URL.Query().Get("offset"), " ")
 	if len(offset) > 0 {
 		numOffset, err := strconv.Atoi(offset)
 		if err != nil || numOffset < 0 {
@@ -216,4 +217,12 @@ func (mw *MW) searchBooksRequest(r *http.Request, w http.ResponseWriter) *Search
 	}
 
 	return request
+}
+
+// clearWhitespaces removes extra whitespaces from the given string.
+func clearWhitespaces(s string) string {
+	s = strings.Trim(s, " ")
+	re := regexp.MustCompile(`\s{2,}`)
+	s = re.ReplaceAllString(s, " ")
+	return s
 }
