@@ -1,5 +1,5 @@
 [![Go Report Card](https://goreportcard.com/badge/github.com/rumyantseva/mif)](https://goreportcard.com/report/github.com/rumyantseva/mif)
-
+[![Build Status](https://travis-ci.org/rumyantseva/mif.svg?branch=master)](https://travis-ci.org/rumyantseva/mif)
 
 Этот репозиторий представляет собой реализацию неофициального REST API для книг издательства [«МИФ»](http://mann-ivanov-ferber.ru).
 
