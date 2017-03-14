@@ -11,10 +11,7 @@ import (
 	"github.com/Sirupsen/logrus"
 )
 
-func standardizeSpaces(s string) string {
-	return strings.Join(strings.Fields(s), " ")
-}
-
+// How to run: go run sitemap.go
 func main() {
 	log := logrus.New()
 
