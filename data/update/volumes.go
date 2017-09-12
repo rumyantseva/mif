@@ -7,9 +7,10 @@ import (
 	"os"
 
 	"github.com/Sirupsen/logrus"
+	"gopkg.in/reform.v1"
+
 	"github.com/rumyantseva/mif/models"
 	"github.com/rumyantseva/mif/utils"
-	"gopkg.in/reform.v1"
 )
 
 // How to run:

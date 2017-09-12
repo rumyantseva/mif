@@ -9,8 +9,9 @@ import (
 	"time"
 
 	"github.com/julienschmidt/httprouter"
-	"github.com/rumyantseva/mif/models"
 	"gopkg.in/reform.v1"
+
+	"github.com/rumyantseva/mif/models"
 )
 
 // LibraryRequest describes common ADD / DELETE request for user library.

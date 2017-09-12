@@ -8,6 +8,7 @@ import (
 	"strconv"
 
 	"github.com/Sirupsen/logrus"
+
 	"github.com/rumyantseva/mif/models"
 	"github.com/rumyantseva/mif/utils"
 )

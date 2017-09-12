@@ -5,11 +5,12 @@ import (
 	"encoding/json"
 	"encoding/xml"
 	"fmt"
-	"github.com/rumyantseva/mif/models"
 	"net/http"
 	"os"
 	"strconv"
 	"strings"
+
+	"github.com/rumyantseva/mif/models"
 )
 
 // How to run: go run parse.go

@@ -5,8 +5,9 @@ import (
 
 	"github.com/gorilla/context"
 	"github.com/julienschmidt/httprouter"
-	"github.com/rumyantseva/mif/models"
 	"gopkg.in/reform.v1"
+
+	"github.com/rumyantseva/mif/models"
 )
 
 // Authorize middleware: check authorization, save user in context and move request to given handler.
