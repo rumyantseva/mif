@@ -1,5 +1,4 @@
 .idea
 /mif
 db/mifbooks.sql
-vendor/
 _vendor*
