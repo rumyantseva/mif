@@ -9,8 +9,9 @@ import (
 
 	"github.com/AlekSi/pointer"
 	"github.com/julienschmidt/httprouter"
-	"github.com/rumyantseva/mif/models"
 	"gopkg.in/reform.v1"
+
+	"github.com/rumyantseva/mif/models"
 )
 
 // SearchBooksRequest describes parameters of books searching request.
