@@ -11,6 +11,7 @@ import (
 
 	"github.com/rumyantseva/mif/models"
 	"github.com/rumyantseva/mif/utils"
+	"strings"
 )
 
 // How to run:
@@ -45,8 +46,14 @@ func main() {
 
 			book := &models.Book{}
 
+			if len(record) < 2 {
+				continue
+			}
+
 			// Check if book with URL exists
 			bookURL := record[1]
+			bookURL = strings.Replace(bookURL, "http://", "https://", -1)
+			bookURL = strings.Replace(bookURL, "https://www.", "https://", -1)
 
 			st, err := DB.FindOneFrom(models.BookTable, "url", bookURL)
 

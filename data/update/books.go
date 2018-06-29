@@ -53,16 +53,44 @@ func main() {
 		// Parse ISBN
 		isbn := parseISBN(respStr, log)
 		book.ISBN = pointer.ToString(strings.Trim(isbn, " "))
+		if len(*book.ISBN) > 64 {
+			book.ISBN = pointer.ToString("")
+			log.Errorf("ISBN is wrong: '%s'", *book.ISBN)
+		}
 
 		// Parse common information
 		parts := strings.Split(respStr, "var initialObject = ")
 		if len(parts) != 2 {
-			log.Fatalf("Couldn't parse common information for URL %s", book.URL)
+			log.Errorf("Couldn't find initial object to parse data for URL %s", book.URL)
+			brokenBook := &models.BookBroken{
+				URL: book.URL,
+			}
+			err := db.Save(brokenBook)
+			if err != nil {
+				logrus.Fatal(err)
+			}
+			err = db.Delete(book)
+			if err != nil {
+				logrus.Fatal(err)
+			}
+			continue
 		}
 
 		parts = strings.Split(parts[1], "$.extend(")
 		if len(parts) != 2 {
-			log.Fatalf("Couldn't parse common information for URL %s", book.URL)
+			log.Errorf("Couldn't find extend to parse data for URL %s", book.URL)
+			brokenBook := &models.BookBroken{
+				URL: book.URL,
+			}
+			err := db.Save(brokenBook)
+			if err != nil {
+				logrus.Fatal(err)
+			}
+			err = db.Delete(book)
+			if err != nil {
+				logrus.Fatal(err)
+			}
+			continue
 		}
 		parsed := struct {
 			ID         string `json:"productID"`

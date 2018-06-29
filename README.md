@@ -54,6 +54,14 @@
       authors VARCHAR(512),
       url VARCHAR(512) UNIQUE NOT NULL,
       created_at TIMESTAMP WITHOUT TIME ZONE NOT NULL,
+      updated_at TIMESTAMP WITHOUT TIME ZONE NOT NULL,
+      is_visible BOOLEAN DEFAULT NULL
+    );
+
+    CREATE TABLE IF NOT EXISTS books_broken (
+      id SERIAL PRIMARY KEY,
+      url VARCHAR(512) UNIQUE NOT NULL,
+      created_at TIMESTAMP WITHOUT TIME ZONE NOT NULL,
       updated_at TIMESTAMP WITHOUT TIME ZONE NOT NULL
     );
     

@@ -10,14 +10,14 @@
 [[projects]]
   name = "github.com/Sirupsen/logrus"
   packages = ["."]
-  revision = "f006c2ac4710855cf0f916dd6b77acf6b048dc6e"
-  version = "v1.0.3"
+  revision = "c155da19408a8799da419ed3eeb0cb5db0ad5dbc"
+  version = "v1.0.5"
 
 [[projects]]
   name = "github.com/gorilla/context"
   packages = ["."]
-  revision = "1ea25387ff6f684839d82767c1733ff4d4d15d0a"
-  version = "v1.1"
+  revision = "08b5f424b9271eedf6f9f0ce86cb9396ed337a42"
+  version = "v1.1.1"
 
 [[projects]]
   name = "github.com/julienschmidt/httprouter"
@@ -29,7 +29,7 @@
   branch = "master"
   name = "github.com/lib/pq"
   packages = [".","oid"]
-  revision = "e42267488fe361b9dc034be7a6bffef5b195bceb"
+  revision = "90697d60dd844d5ef6ff15135d0203f65d2f53b8"
 
 [[projects]]
   name = "github.com/rumyantseva/go-yandex-market"
@@ -41,23 +41,23 @@
   branch = "master"
   name = "golang.org/x/crypto"
   packages = ["ssh/terminal"]
-  revision = "74b34b9dd60829a9fcaf56a59e81c3877a8ecd2c"
+  revision = "a49355c7e3f8fe157a85be2f77e6e269a0f89602"
 
 [[projects]]
   branch = "master"
   name = "golang.org/x/sys"
   packages = ["unix","windows"]
-  revision = "a5054c7c1385fd50d9394475365355a87a7873ec"
+  revision = "7138fd3d9dc8335c567ca206f4333fb75eb05d56"
 
 [[projects]]
   name = "gopkg.in/reform.v1"
   packages = [".","dialects/postgresql","parse"]
-  revision = "aa2ae077c28edaf600cb1b9067e15aca0b0179bd"
-  version = "v1.2.1"
+  revision = "161dee950cbd38085dac33c87ef81140f2da99cc"
+  version = "v1.3.1"
 
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "685a3d7da9ee19dd28b2d94b3b7e63a4c8f5bde8eff6b32bbbf988e3e6a19a3a"
+  inputs-digest = "c83d90595bb3f570723a1dca238de2f7d19047eb070ca229cd15670b04ac12dc"
   solver-name = "gps-cdcl"
   solver-version = 1

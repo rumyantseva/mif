@@ -84,7 +84,9 @@ func (bs *BookSaver) SaveBook(record []string) error {
 
 	// Check if book with URL exists
 	bookURL := record[5]
-	bookURL = strings.Replace(bookURL, "?buytab=paperbook&utm_source=ya.market&utm_medium=cpc&utm_campaign=market", "", 100)
+	bookURL = strings.Replace(bookURL, "?buytab=paperbook&utm_source=ya.market&utm_medium=cpc&utm_campaign=market", "", -1)
+	bookURL = strings.Replace(bookURL, "http://", "https://", -1)
+	bookURL = strings.Replace(bookURL, "https://www.", "https://", -1)
 
 	if len(bookURL) == 0 {
 		logrus.Fatalf("Book %s doesn't have URL!", record[0])
