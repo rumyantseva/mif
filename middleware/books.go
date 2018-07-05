@@ -19,7 +19,7 @@ type SearchBooksRequest struct {
 	mifID  *int
 	volume *string
 	search *string
-	categoryId *int
+	categoryID *int
 	author *string
 	limit  int
 	offset int
@@ -91,9 +91,9 @@ func (mw *MW) SearchBooks(w http.ResponseWriter, r *http.Request, _ httprouter.P
 		ind++
 	}
 
-	if request.categoryId != nil {
+	if request.categoryID != nil {
 		conditions = append(conditions, "books.category_id = "+mw.db.Placeholder(ind))
-		args = append(args, *request.categoryId)
+		args = append(args, *request.categoryID)
 		ind++
 	}
 
@@ -160,7 +160,7 @@ func (mw *MW) searchBooksRequest(r *http.Request, w http.ResponseWriter) *Search
 		mifID:  nil,
 		volume: nil,
 		search: nil,
-		categoryId: nil,
+		categoryID: nil,
 		author: nil,
 		limit:  10,
 		offset: 0,
@@ -193,15 +193,15 @@ func (mw *MW) searchBooksRequest(r *http.Request, w http.ResponseWriter) *Search
 		request.search = pointer.ToString("%" + search + "%")
 	}
 
-	categoryId := clearWhitespaces(r.URL.Query().Get("category_id"))
-	if len(categoryId) > 0 {
-		numID, err := strconv.Atoi(categoryId)
+	categoryID := clearWhitespaces(r.URL.Query().Get("category_id"))
+	if len(categoryID) > 0 {
+		numID, err := strconv.Atoi(categoryID)
 		if err != nil {
 			mw.makeError(w, http.StatusBadRequest, "Category Id must be positive integer.")
 			return nil
 		}
 
-		request.categoryId = pointer.ToInt(numID)
+		request.categoryID = pointer.ToInt(numID)
 	}
 
 	author := clearWhitespaces(r.URL.Query().Get("author"))
