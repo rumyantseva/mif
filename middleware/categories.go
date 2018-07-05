@@ -1,18 +1,18 @@
 package middleware
 
 import (
-	"net/http"
+	"fmt"
+	"github.com/AlekSi/pointer"
 	"github.com/julienschmidt/httprouter"
 	"github.com/rumyantseva/mif/models"
-	"fmt"
+	"net/http"
 	"strconv"
 	"strings"
-	"github.com/AlekSi/pointer"
 )
 
 // SearchCategoryRequest describes parameters of categories searching request.
 type SearchCategoryRequest struct {
-	title *string
+	title  *string
 	limit  int
 	offset int
 }
@@ -73,7 +73,7 @@ func (mw *MW) SearchCategories(w http.ResponseWriter, r *http.Request, p httprou
 // searchCategoriesRequest checks http request and makes SearchCategoryRequest item.
 func (mw *MW) searchCategoriesRequest(r *http.Request, w http.ResponseWriter) *SearchCategoryRequest {
 	request := &SearchCategoryRequest{
-		title: nil,
+		title:  nil,
 		limit:  10,
 		offset: 0,
 	}
