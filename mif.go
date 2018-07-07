@@ -46,6 +46,8 @@ func main() {
 	router.GET("/api/v1/books", mw.SearchBooks)
 	router.GET("/api/v1/books/:id", mw.SingleBook)
 
+	router.GET("/api/v1/categories", mw.SearchCategories)
+
 	router.GET("/api/v1/library", mw.Authorize(mw.Library))
 	router.POST("/api/v1/library", mw.Authorize(mw.AddToLibrary))
 	router.DELETE("/api/v1/library", mw.Authorize(mw.DeleteFromLibrary))
