@@ -2,6 +2,10 @@
 [![Build Status](https://travis-ci.org/rumyantseva/mif.svg?branch=master)](https://travis-ci.org/rumyantseva/mif)
 [![Contributions Welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](https://github.com/rumyantseva/mif/issues)
 
+**Важно! Этот проект находится в архивном состоянии и не следует некоторым лучшим практикам, которые имеет смысл рассматривать при разаботке сервисов на Go.** Если вы хотите узнать побольше о лучших практиках написания сервисов на Go, пожалуйста, ознакомьтесь с докладом [Best Practices for Cloud Native Go Services](https://youtu.be/rRSkbOMTHLw) или другими подходящими источниками.
+
+***
+
 Этот репозиторий представляет собой реализацию неофициального REST API для книг издательства [«МИФ»](http://mann-ivanov-ferber.ru).
 
 Всё написано на [Go](https://golang.org).
